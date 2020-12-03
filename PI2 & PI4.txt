@@ -1,0 +1,14 @@
+PI2
+Wynik PI uzyskano niepoprawnie. Efektem tego jest fakt, że zmienna x i sum jest współdzielona przez wszystkie wątki do odczytu i do zapisu, przez co dostęp do nich jest realizowany na zasadzie wyścigu(tzn. kto pierwszy, ten lepszy). 
+W takim wariancie, zmienna sum jest aktualizowana w oddzielnych wątkach i jej wartości są nadpisywane. W tej wersji kodu nie jest realizowany wariant, w który jeden wątek zapisuje wartość, a drugi czeka, aż ten zakończy ta operację, aby odczytać i zwiększyć jej wartość.
+ Aby uzyskać taki efekt, niezbędna będzie atomowość zapisu i odczytu zmiennej.
+Zmienne prywatne : i.
+Zmienne współdzielone: step, num_steps, x,
+sum.
+
+PI4
+W tym wariancie uzyskaliśmy poprawę czasu wyliczania wartości PI poprzez wykorzystanie nowej prywatnej zmiennej suml dla każdego z wątków, w celu zapamiętania wyniku lokalnej pracy. 
+Dyrektywa #pragma omp atomci posłużyła w tej sytuacji do poprawnego scalenia wartości w ramach globalnej zmiennej sum. Uzyskane czasy są nawet o 5,2 razy lepsze od czasu kodu sekwencyjnego. 
+Zmienne prywatne: i, x, suml.
+Zmienne współdzielone: step, num_steps,
+sum.
